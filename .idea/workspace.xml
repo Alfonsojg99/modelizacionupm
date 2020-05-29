@@ -21,21 +21,7 @@
   <component name="ChangeListManager">
     <list default="true" id="9875eaef-f0a0-4207-87d6-2ac0986d5a05" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/1-18661_big-image-pieza-de-ajedrez-torre-clipart.png" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/ajederez2.py" beforeDir="false" afterPath="$PROJECT_DIR$/ajederez2.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ajedrezoo.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/alfilblanco.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/alfilnegro.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/caballoblanco.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/caballonegro.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/gblancas.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/gnegras.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/peonblanco.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/peonegro.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/reinablanca.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/reinanegra.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/reynegro.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/torrenegra.png" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -157,22 +143,22 @@
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="392" y="0" key="#ajederez2/0.0.1366.728@0.0.1366.728" timestamp="1590743908176" />
-    <state width="1345" height="190" key="GridCell.Tab.0.bottom" timestamp="1590770853587">
+    <state width="1345" height="222" key="GridCell.Tab.0.bottom" timestamp="1590776260387">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1345" height="190" key="GridCell.Tab.0.bottom/0.0.1366.728@0.0.1366.728" timestamp="1590770853587" />
-    <state width="1345" height="190" key="GridCell.Tab.0.center" timestamp="1590770853586">
+    <state width="1345" height="222" key="GridCell.Tab.0.bottom/0.0.1366.728@0.0.1366.728" timestamp="1590776260387" />
+    <state width="1345" height="222" key="GridCell.Tab.0.center" timestamp="1590776260387">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1345" height="190" key="GridCell.Tab.0.center/0.0.1366.728@0.0.1366.728" timestamp="1590770853586" />
-    <state width="1345" height="190" key="GridCell.Tab.0.left" timestamp="1590770853586">
+    <state width="1345" height="222" key="GridCell.Tab.0.center/0.0.1366.728@0.0.1366.728" timestamp="1590776260387" />
+    <state width="1345" height="222" key="GridCell.Tab.0.left" timestamp="1590776260387">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1345" height="190" key="GridCell.Tab.0.left/0.0.1366.728@0.0.1366.728" timestamp="1590770853586" />
-    <state width="1345" height="190" key="GridCell.Tab.0.right" timestamp="1590770853587">
+    <state width="1345" height="222" key="GridCell.Tab.0.left/0.0.1366.728@0.0.1366.728" timestamp="1590776260387" />
+    <state width="1345" height="222" key="GridCell.Tab.0.right" timestamp="1590776260387">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1345" height="190" key="GridCell.Tab.0.right/0.0.1366.728@0.0.1366.728" timestamp="1590770853587" />
+    <state width="1345" height="222" key="GridCell.Tab.0.right/0.0.1366.728@0.0.1366.728" timestamp="1590776260387" />
     <state x="184" y="9" key="SettingsEditor" timestamp="1590753777909">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
