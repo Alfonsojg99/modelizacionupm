@@ -164,17 +164,13 @@ def sacasilla(posraton):
 			y = i
 	return x,y
 
-ud7 = [0,2,7]
+#ud7 = [0,2,7]
 
 tablero = pygame.image.load('tablero-ajedrez.png')			
 puntoazul = pygame.image.load('puntoazul.png')
 gblancas = pygame.image.load('gblancas.png')
 gnegras = pygame.image.load('gnegras.png')
 
-#torreblanca = [0]
-
-#for c in (1,2):
-#	torreblanca.append(Torreblanca(pow(c,3)))
 torreblanca = Torreblanca()
 reyblanco = Reyblanco()
 
