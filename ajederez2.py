@@ -19,7 +19,7 @@ ocupadas=[
 [0,0,0,0,0,0,0,0,0],
 [0,0,0,0,0,0,0,0,0]
 ]
-cocupadas=[#color de las ocupadas hola qtal
+cocupadas=[#color de las ocupadas
 [0,0,0,0,0,0,0,0,0],#esta linia y el 0 de mas es para kitar el 0 de los indices
 [0,0,0,0,0,0,0,0,0],
 [0,0,0,0,0,0,0,0,0],
