@@ -47,17 +47,17 @@ def clasnim(posN):
         print("Se encuentra en una posición P")
     else:
         bin = len(decabin(suma))
-    encontrado = False
-    i = 0
-    while not encontrado:
-        if len(decabin(posN[i])) >= bin and decabin(posN[i])[-bin] == 1:
-            encontrado = True
-        else:
-            i += 1
-    estado.pop(i)
-    estado.insert(i, sumdig(estado))
-    print("Estado inicial:" + str(posP))
-    print("Estado tras el mejor primer movimiento: " + str(estado))
+        encontrado = False
+        i = 0
+        while not encontrado:
+            if len(decabin(posN[i])) >= bin and decabin(posN[i])[-bin] == 1:
+                encontrado = True
+            else:
+                i += 1
+        estado.pop(i)
+        estado.insert(i, sumdig(estado))
+        print("Estado inicial:" + str(posP))
+        print("Estado tras el mejor primer movimiento: " + str(estado))
 
 
 def decabin(dec):

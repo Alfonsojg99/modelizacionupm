@@ -1,6 +1,7 @@
 #-*- coding: utf-8 -*-
 import pygame, sys
 from pygame.locals import *
+from main import clasnim, sumdig, decabin
 
 pygame.init()
 visor = pygame.display.set_mode((560,560))
@@ -59,67 +60,35 @@ class metapieza():
 		if self.casx < 9 and self.casy < 9:
 			ocupadas[self.casy][self.casx] = self
 			cocupadas[self.casy][self.casx] = self.color
+
 	def cambiasilla(self,x,y):
 		ocupadas[self.casy][self.casx]=cocupadas[self.casy][self.casx] = 0
 		self.__init__(x,y)
 		self.movida = 1
-	def casillaocupada(self):
-		return self.casy,self.casx
+
 	def movlineal(self,movmax=8):
 		casi = 0
-		oriz = ordr = vrab = vrar = True
+		ordr = vrar = True
 		while casi < movmax:
 			casi+=1
-			if 0 < self.casy <= 8 and 0 < self.casx-casi <= 8 and oriz:
-				oriz = cocupadas[self.casy][self.casx-casi] != self.color
-				if oriz:
-					self.casposibles.append((self.casx-casi,self.casy))
-					oriz = cocupadas[self.casy][self.casx-casi] != 3-self.color
 			if 0 < self.casy <= 8 and 0 < self.casx+casi <= 8 and ordr:
-				ordr = cocupadas[self.casy][self.casx+casi] != self.color
-				if ordr:
 					self.casposibles.append((self.casx+casi,self.casy))
 					ordr = cocupadas[self.casy][self.casx+casi] != 3-self.color				
-			if 0 < self.casy-casi <= 8 and 0 < self.casx <= 8 and vrab:		
-				vrab = cocupadas[self.casy-casi][self.casx] != self.color
-				if vrab:
-					self.casposibles.append((self.casx,self.casy-casi))
-					vrab = cocupadas[self.casy-casi][self.casx] != 3-self.color
-			if 0 < self.casy+casi <= 8 and 0 < self.casx <= 8 and vrar:		
-				vrar = cocupadas[self.casy+casi][self.casx] != self.color
-				if vrar:
+
+			if 0 < self.casy+casi <= 8 and 0 < self.casx <= 8 and vrar:
 					self.casposibles.append((self.casx,self.casy+casi))
 					vrar = cocupadas[self.casy+casi][self.casx] != 3-self.color
 		return self.casposibles
 		
 	def movdiagonal(self,movmax=8):
 		casi = 0
-		ariz = abdr = ardr = abiz = True
+		abdr  = True
 		while casi < movmax:
 			casi+=1
-			if 0 < self.casy-casi <= 8 and 0 < self.casx-casi <= 8 and ariz:		
-				ariz = cocupadas[self.casy-casi][self.casx-casi] != self.color
-				if ariz:
-					self.casposibles.append((self.casx-casi,self.casy-casi))
-					ariz = cocupadas[self.casy-casi][self.casx-casi] != 3-self.color
-			if 0 < self.casy+casi <= 8 and 0 < self.casx+casi <= 8 and abdr:		
-				abdr = cocupadas[self.casy+casi][self.casx+casi] != self.color
-				if abdr:
+			if 0 < self.casy+casi <= 8 and 0 < self.casx+casi <= 8 and abdr:
 					self.casposibles.append((self.casx+casi,self.casy+casi))
 					abdr = cocupadas[self.casy+casi][self.casx+casi] != 3-self.color
-			if 0 < self.casy-casi <= 8 and 0 < self.casx+casi <= 8 and ardr:		
-				ardr = cocupadas[self.casy-casi][self.casx+casi] != self.color
-				if ardr:
-					self.casposibles.append((self.casx+casi,self.casy-casi))
-					ardr = cocupadas[self.casy-casi][self.casx+casi] != 3-self.color
-			if 0 < self.casy+casi <= 8 and 0 < self.casx-casi <= 8 and abiz:		
-				abiz = cocupadas[self.casy+casi][self.casx-casi] != self.color
-				if abiz:
-					self.casposibles.append((self.casx-casi,self.casy+casi))
-					abiz = cocupadas[self.casy+casi][self.casx-casi] != 3-self.color
 		return self.casposibles
-
-
 
 
 class metarey(metapieza):
@@ -127,16 +96,7 @@ class metarey(metapieza):
 		posimov=[]
 		posimov+=metapieza.movlineal(self,1)
 		posimov+=metapieza.movdiagonal(self,1)
-
-		if self.movida == 0:
-			if (torreblanca.movida == 0) and \
-			cocupadas[self.casy][self.casx-3] == 0 and cocupadas[self.casy][self.casx-2] == 0 \
-			and cocupadas[self.casy][self.casx-1] == 0:
-				self.casposibles.append((self.casx-2,self.casy))
-			posimov+=self.casposibles
 		return posimov
-		
-			
 
 class Torreblanca(metapieza):
 	def __init__(self,x=3,y=1):
@@ -164,7 +124,6 @@ def sacasilla(posraton):
 			y = i
 	return x,y
 
-#ud7 = [0,2,7]
 
 tablero = pygame.image.load('tablero-ajedrez.png')			
 puntoazul = pygame.image.load('puntoazul.png')
@@ -177,7 +136,8 @@ reyblanco = Reyblanco()
 click=[]
 
 fichamover=""
-turno="blancas"
+turno=1
+
 
 while True:
 	for evento in pygame.event.get():
@@ -189,43 +149,66 @@ while True:
 
 	visor.blit(tablero,(0,0))
 
-	if len(click) == 1:#primer click
-		posraton = click[0]
-		casillax,casillay=sacasilla(posraton)
-		fichamover=sacapieza(casillax,casillay)
-		if (fichamover == 0):
-			fichamover=""#anula movimientos del otro turno
-		else:
-			posimov = fichamover.puedemovera()
-		if fichamover=="":
-			click=[]
-
-	if len(click) == 2:#segundo click
-		posraton = click[1]
-		nuevacasillax,nuevacasillay = sacasilla(posraton)
-		if (nuevacasillax,nuevacasillay) in posimov:
-			fichamover.cambiasilla(nuevacasillax,nuevacasillay)
-			if fichamover.color == 1:
-				turno = "negras"
+	if turno == 1:
+		if len(click) == 1:#primer click
+			posraton = click[0]
+			casillax,casillay=sacasilla(posraton)
+			fichamover=sacapieza(casillax,casillay)
+			if (fichamover == 0):
+				fichamover=""#anula movimientos del otro turno
 			else:
-				turno = "blancas"
+				posimov = fichamover.puedemovera()
+			if fichamover=="":
+				click=[]
+
+		if len(click) == 2:#segundo click
+			posraton = click[1]
+			nuevacasillax,nuevacasillay = sacasilla(posraton)
+			if (nuevacasillax,nuevacasillay) in posimov:
+				fichamover.cambiasilla(nuevacasillax,nuevacasillay)
+				turno = 2
 
 	#refrescos y representaciones
-	if reyblanco.casx < 9:		
+
 		visor.blit(torreblanca.foto,torreblanca.pos)
 		visor.blit(reyblanco.foto,reyblanco.pos)
 		
 	
-	if len(click) > 1:
-		click=[]
-		fichamover=""
-	if len(click) > 0:
-		for pos in posimov:
-			visor.blit(puntoazul,(casilla[pos[0]],casilla[pos[1]]))
+		if len(click) > 1:
+			click=[]
+			fichamover=""
+		if len(click) > 0:
+			for pos in posimov:
+				visor.blit(puntoazul,(casilla[pos[0]],casilla[pos[1]]))
             
-	elif reyblanco.casx > 8:
-		visor.blit(gnegras,(0,0))
+	#elif reyblanco.casx > 8:
+	#	visor.blit(gnegras,(0,0))
 
-	pygame.display.update()
+		pygame.display.update()
 	
-	pygame.time.wait(20)#limita a 50 fps para ahorrar cpu
+	#pygame.time.wait(20)#limita a 50 fps para ahorrar cpu
+
+	if turno == 2:
+		lista = []
+		posX = []
+		posY= []
+		for i in range(len(ocupadas)):
+			for j in range(len(ocupadas[i])):
+				if ocupadas[i][j] != 0 :
+					lista.append(ocupadas[i][j])
+					posX.append(i)
+					posY.append(j)
+		print(lista)
+		print(posX)
+		print(posY)
+		valorTorre = Torre[posX[1]-1][posY[1]-1]
+		valorRey = Rey[posX[0]-1][posY[0]-1]
+		valorNim = sumdig([valorRey, valorTorre])
+		print(valorNim)
+		for i in range(len(Torre)):
+			for j in range(len(Torre[i])):
+				if ocupadas[i][j] != 0 :
+
+
+		turno = 1
+
