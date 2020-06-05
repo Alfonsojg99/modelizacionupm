@@ -20,14 +20,14 @@ ocupadas=[[0, 0, 0, 0, 0, 0, 0, 0, 0],
 		  [0, 0, 0, 0, 0, 0, 0, 0, 0]]
 
 ocupadas2=[[0, 0, 0, 0, 0, 0, 0, 0, 0],
-		  [0, 0, 0, 0, 0, 0, 0, 0, 0],
-		  [0, 0, 0, 0, 0, 0, 0, 0, 0],
-		  [0, 0, 0, 0, 0, 0, 0, 0, 0],
-		  [0, 0, 0, 0, 0, 0, 0, 0, 0],
-		  [0, 0, 0, 0, 0, 0, 0, 0, 0],
-		  [0, 0, 0, 0, 0, 0, 0, 0, 0],
-		  [0, 0, 0, 0, 0, 0, 0, 0, 0],
-		  [0, 0, 0, 0, 0, 0, 0, 0, 0]]
+		   [0, 0, 0, 0, 0, 0, 0, 0, 0],
+		   [0, 0, 0, 0, 0, 0, 0, 0, 0],
+		   [0, 0, 0, 0, 0, 0, 0, 0, 0],
+		   [0, 0, 0, 0, 0, 0, 0, 0, 0],
+		   [0, 0, 0, 0, 0, 0, 0, 0, 0],
+		   [0, 0, 0, 0, 0, 0, 0, 0, 0],
+		   [0, 0, 0, 0, 0, 0, 0, 0, 0],
+		   [0, 0, 0, 0, 0, 0, 0, 0, 0]]
 
 Rey = [[0, 0, 0, 0, 0, 0, 0, 0, 0],
 	   [0, 2, 1, 2, 1, 2, 1, 2, 1],
@@ -166,8 +166,6 @@ while True:
 					lista.append(ocupadas2[i][j].nombre)
 					posX.append(j)
 					posY.append(i)
-		print("--------------------------------")
-		print(lista)
 		if lista[0] == "rey":
 			fichamoverRey = sacapieza(posX[0], posY[0])
 			posimovRey = fichamoverRey.puedemovera()
@@ -180,6 +178,7 @@ while True:
 			posimovTorre = fichamoverTorre.puedemovera()
 
 		if len(posimovRey) == 0 and len(posimovTorre) == 0:
+			time.sleep(1)
 			visor.blit(pierdes, (0, 0))
 			pygame.display.update()
 			time.sleep(1)
@@ -235,7 +234,6 @@ while True:
 					posX.append(j)
 					posY.append(i)
 
-
 		if lista[0] == "rey":
 			valorRey = Rey[posX[0]][posY[0]]
 			valorTorre = Torre[posX[1]][posY[1]]
@@ -250,11 +248,9 @@ while True:
 			posimovRey = fichamoverRey.puedemovera()
 			fichamoverTorre = sacapieza(posX[0], posY[0])
 			posimovTorre = fichamoverTorre.puedemovera()
-		valorNim = sumdig([valorRey, valorTorre])
-		print("valorNim actual : " + str(valorNim))
-		print(posimovRey)
-		print(posimovTorre)
+
 		if len(posimovRey) == 0 and len(posimovTorre) == 0:
+			time.sleep(1)
 			visor.blit(ganas,(0,0))
 			pygame.display.update()
 			time.sleep(1)
@@ -275,5 +271,9 @@ while True:
 						if sumav == 0:
 							fichamoverRey.cambiasilla(nuevacasillax, nuevacasillay)
 							sincambiar = False
+
+		visor.blit(torreblanca.foto, torreblanca.pos)
+		visor.blit(reyblanco.foto, reyblanco.pos)
+		pygame.display.update()
 
 		turno = 1
