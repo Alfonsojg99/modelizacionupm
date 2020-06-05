@@ -9,36 +9,44 @@ pygame.display.set_caption("ajedrez")
 
 casilla=[0,0,70,140,210,280,350,420,490,560,999]
 
-ocupadas=[
-[0,0,0,0,0,0,0,0,0],
-[0,0,0,0,0,0,0,0,0],
-[0,0,0,0,0,0,0,0,0],
-[0,0,0,0,0,0,0,0,0],
-[0,0,0,0,0,0,0,0,0],
-[0,0,0,0,0,0,0,0,0],
-[0,0,0,0,0,0,0,0,0],
-[0,0,0,0,0,0,0,0,0],
-[0,0,0,0,0,0,0,0,0]
-]
+ocupadas=[[0, 0, 0, 0, 0, 0, 0, 0, 0],
+		  [0, 0, 0, 0, 0, 0, 0, 0, 0],
+		  [0, 0, 0, 0, 0, 0, 0, 0, 0],
+		  [0, 0, 0, 0, 0, 0, 0, 0, 0],
+		  [0, 0, 0, 0, 0, 0, 0, 0, 0],
+		  [0, 0, 0, 0, 0, 0, 0, 0, 0],
+		  [0, 0, 0, 0, 0, 0, 0, 0, 0],
+		  [0, 0, 0, 0, 0, 0, 0, 0, 0],
+		  [0, 0, 0, 0, 0, 0, 0, 0, 0]]
 
-Rey = [[0,0,0,0,0,0,0,0,0],
-	   [0,2, 1, 2, 1, 2, 1, 2, 1],
-       [0,1, 0, 3, 0, 3, 0, 3, 0],
-       [0,2, 3, 2, 1, 2, 1, 2, 1],
-       [0,1, 0, 1, 0, 3, 0, 3, 0],
-       [0,2, 3, 2, 3, 2, 1, 2, 1],
-       [0,1, 0, 1, 0, 1, 0, 3, 0],
-       [0,2, 3, 2, 3, 2, 3, 2, 1],
-       [0,1, 0, 1, 0, 1, 0, 1, 0]]
-Torre = [[0,0,0,0,0,0,0,0,0],
-		 [0,0, 1, 2, 3, 4, 5, 6, 7],
-         [0,1, 0, 3, 2, 5, 4, 7, 6],
-         [0,2, 3, 0, 1, 6, 7, 4, 5],
-         [0,3, 2, 1, 0, 7, 6, 5, 4],
-         [0,4, 5, 6, 7, 0, 1, 2, 3],
-         [0,5, 4, 7, 6, 1, 0, 3, 2],
-         [0,6, 7, 4, 5, 2, 3, 0, 1],
-         [0,7, 6, 5, 4, 3, 2, 1, 0]]
+ocupadas2=[[0, 0, 0, 0, 0, 0, 0, 0, 0],
+		  [0, 0, 0, 0, 0, 0, 0, 0, 0],
+		  [0, 0, 0, 0, 0, 0, 0, 0, 0],
+		  [0, 0, 0, 0, 0, 0, 0, 0, 0],
+		  [0, 0, 0, 0, 0, 0, 0, 0, 0],
+		  [0, 0, 0, 0, 0, 0, 0, 0, 0],
+		  [0, 0, 0, 0, 0, 0, 0, 0, 0],
+		  [0, 0, 0, 0, 0, 0, 0, 0, 0],
+		  [0, 0, 0, 0, 0, 0, 0, 0, 0]]
+
+Rey = [[0, 0, 0, 0, 0, 0, 0, 0, 0],
+	   [0, 2, 1, 2, 1, 2, 1, 2, 1],
+       [0, 1, 0, 3, 0, 3, 0, 3, 0],
+       [0, 2, 3, 2, 1, 2, 1, 2, 1],
+       [0, 1, 0, 1, 0, 3, 0, 3, 0],
+       [0, 2, 3, 2, 3, 2, 1, 2, 1],
+       [0, 1, 0, 1, 0, 1, 0, 3, 0],
+       [0, 2, 3, 2, 3, 2, 3, 2, 1],
+       [0, 1, 0, 1, 0, 1, 0, 1, 0]]
+Torre = [[0, 0, 0, 0, 0, 0, 0, 0, 0],
+		 [0, 0, 1, 2, 3, 4, 5, 6, 7],
+         [0, 1, 0, 3, 2, 5, 4, 7, 6],
+         [0, 2, 3, 0, 1, 6, 7, 4, 5],
+         [0, 3, 2, 1, 0, 7, 6, 5, 4],
+         [0, 4, 5, 6, 7, 0, 1, 2, 3],
+         [0, 5, 4, 7, 6, 1, 0, 3, 2],
+         [0, 6, 7, 4, 5, 2, 3, 0, 1],
+         [0, 7, 6, 5, 4, 3, 2, 1, 0]]
 
 class metapieza():
 	def __init__(self,x,y):
@@ -47,33 +55,36 @@ class metapieza():
 		self.pos=(casilla[x],casilla[y])
 		self.casposibles=[]
 		if self.casx < 9 and self.casy < 9:
-			ocupadas[self.casy][self.casx] = self
+			if ocupadas[self.casy][self.casx] != 0:
+				ocupadas2[self.casy][self.casx] = self
+			else:
+				ocupadas[self.casy][self.casx] = self
 
 	def cambiasilla(self,x,y):
+		if ocupadas2[self.casy][self.casx] == 0:
+			ocupadas[self.casy][self.casx] = 0
+		else:
+			ocupadas[self.casy][self.casx] = ocupadas2[self.casy][self.casx]
+			ocupadas2[self.casy][self.casx] = 0
+		self.__init__(x,y)
+
+	def cambiosilla2(self,x,y):
 		ocupadas[self.casy][self.casx] = 0
 		self.__init__(x,y)
 
-	def movlineal(self,movmax=8):
+	def movlineal(self, movmax=8):
 		casi = 0
-		ordr = vrar = True
 		while casi < movmax:
-			casi+=1
-			if 0 < self.casy <= 8 and 0 < self.casx+casi <= 8 and ordr:
-					ordr = ocupadas[self.casy][self.casx + casi] == 0
-					if ordr:
-						self.casposibles.append((self.casx+casi,self.casy))
-			if 0 < self.casy+casi <= 8 and 0 < self.casx <= 8 and vrar:
-					vrar = ocupadas[self.casy + casi][self.casx] == 0
-					if vrar:
-						self.casposibles.append((self.casx,self.casy+casi))
+			casi += 1
+			if 0 < self.casy <= 8 and 0 < self.casx + casi <= 8:
+				self.casposibles.append((self.casx + casi, self.casy))
+			if 0 < self.casy + casi <= 8 and 0 < self.casx <= 8:
+				self.casposibles.append((self.casx, self.casy + casi))
 		return self.casposibles
 
 	def movdiagonal(self):
 		casi = 1
-		abdr = False
 		if 0 < self.casy + casi <= 8 and 0 < self.casx + casi <= 8:
-			abdr = ocupadas[self.casy + casi][self.casx + casi] == 0
-		if 0 < self.casy + casi <= 8 and 0 < self.casx + casi <= 8 and abdr:
 			self.casposibles.append((self.casx + casi, self.casy + casi))
 		return self.casposibles
 
@@ -106,7 +117,7 @@ def	sacapieza(casx,casy):
 	return ocupadas[casy][casx]
 
 def	sacapieza2(casx,casy):
-	return ocupadas[casx][casy]
+	return ocupadas2[casy][casx]
 
 
 def sacasilla(posraton):
@@ -151,21 +162,21 @@ while True:
 					lista.append(ocupadas[i][j].nombre)
 					posX.append(j)
 					posY.append(i)
-					#posX.append(i)
-					#posY.append(j)
+				if ocupadas2[i][j] != 0:
+					lista.append(ocupadas2[i][j].nombre)
+					posX.append(j)
+					posY.append(i)
+		print("--------------------------------")
+		print(lista)
 		if lista[0] == "rey":
 			fichamoverRey = sacapieza(posX[0], posY[0])
-			#fichamoverRey = sacapieza2(posX[0], posY[0])
 			posimovRey = fichamoverRey.puedemovera()
 			fichamoverTorre = sacapieza(posX[1], posY[1])
-			#fichamoverTorre = sacapieza2(posX[1], posY[1])
 			posimovTorre = fichamoverTorre.puedemovera()
 		else:
 			fichamoverRey = sacapieza(posX[1], posY[1])
-			#fichamoverRey = sacapieza2(posX[1], posY[1])
 			posimovRey = fichamoverRey.puedemovera()
 			fichamoverTorre = sacapieza(posX[0], posY[0])
-			#fichamoverTorre = sacapieza2(posX[0], posY[0])
 			posimovTorre = fichamoverTorre.puedemovera()
 
 		if len(posimovRey) == 0 and len(posimovTorre) == 0:
@@ -178,7 +189,6 @@ while True:
 			posraton = click[0]
 			casillax,casillay=sacasilla(posraton)
 			fichamover=sacapieza(casillax,casillay)
-			#fichamover = sacapieza2(casillax, casillay)
 			if (fichamover == 0):
 				fichamover=""#anula movimientos del otro turno
 			else:
@@ -220,29 +230,25 @@ while True:
 					lista.append(ocupadas[i][j].nombre)
 					posX.append(j)
 					posY.append(i)
-					#posX.append(i)
-					#posY.append(j)
+				if ocupadas2[i][j] != 0 :
+					lista.append(ocupadas2[i][j].nombre)
+					posX.append(j)
+					posY.append(i)
 
-		print("FIGURA: "+ str(lista[0]) +" "+ str (posX[0]) +","+ str (posY[0]))
-		print("FIGURA: " + str(lista[1]) + " " + str(posX[1]) + "," + str(posY[1]))
 
 		if lista[0] == "rey":
 			valorRey = Rey[posX[0]][posY[0]]
 			valorTorre = Torre[posX[1]][posY[1]]
 			fichamoverRey = sacapieza(posX[0], posY[0])
-			# fichamoverRey = sacapieza2(posX[0], posY[0])
 			posimovRey = fichamoverRey.puedemovera()
 			fichamoverTorre = sacapieza(posX[1], posY[1])
-			# fichamoverTorre = sacapieza2(posX[1], posY[1])
 			posimovTorre = fichamoverTorre.puedemovera()
 		else:
 			valorRey = Rey[posX[1]][posY[1]]
 			valorTorre = Torre[posX[0]][posY[0]]
 			fichamoverRey = sacapieza(posX[1], posY[1])
-			# fichamoverRey = sacapieza2(posX[1], posY[1])
 			posimovRey = fichamoverRey.puedemovera()
 			fichamoverTorre = sacapieza(posX[0], posY[0])
-			# fichamoverTorre = sacapieza2(posX[0], posY[0])
 			posimovTorre = fichamoverTorre.puedemovera()
 		valorNim = sumdig([valorRey, valorTorre])
 		print("valorNim actual : " + str(valorNim))
@@ -256,25 +262,18 @@ while True:
 		sincambiar = True
 		for (nuevacasillax,nuevacasillay) in posimovTorre:
 			if sincambiar:
-				#nuevovalorTorre = Torre[nuevacasillax-1][nuevacasillay-1]
 				nuevovalorTorre = Torre[nuevacasillay][nuevacasillax]
 				sumav = sumdig([valorRey, nuevovalorTorre])
 				if sumav == 0:
-					#fichamoverTorre.cambiasilla(nuevacasillay,nuevacasillax)
 					fichamoverTorre.cambiasilla(nuevacasillax, nuevacasillay)
 					sincambiar = False
 		if sincambiar:
 			for (nuevacasillax, nuevacasillay) in posimovRey:
 				if sincambiar:
-						#nuevovalorRey = Rey[nuevacasillax - 1][nuevacasillay - 1]
 						nuevovalorRey = Rey[nuevacasillay][nuevacasillax]
 						sumav = sumdig([nuevovalorRey, valorTorre])
 						if sumav == 0:
 							fichamoverRey.cambiasilla(nuevacasillax, nuevacasillay)
-							#fichamoverRey.cambiasilla(nuevacasillax, nuevacasillay)
 							sincambiar = False
 
-
-		print(ocupadas)
 		turno = 1
-
