@@ -1,6 +1,7 @@
+from functools import reduce
+
 import pygame, sys, time
 from pygame.locals import *
-from main import clasnim, sumdig, decabin
 
 pygame.init()
 visor = pygame.display.set_mode((660,560))
@@ -96,7 +97,7 @@ class metarey(metapieza):
 		return posimov
 
 class Torreblanca(metapieza):
-	def __init__(self,x=3,y=1):
+	def __init__(self,x=2,y=2):
 		self.nombre = "torre"
 		self.foto = pygame.image.load('torreblanca.png')
 		metapieza.__init__(self,x,y)
@@ -104,7 +105,7 @@ class Torreblanca(metapieza):
 		return metapieza.movlineal(self)
 
 class Reyblanco(metarey):
-	def __init__(self,x=1,y=2):
+	def __init__(self,x=1,y=1):
 		self.nombre = "rey"
 		self.foto = pygame.image.load('reyblanco.png')
 		metapieza.__init__(self,x,y)
@@ -127,6 +128,9 @@ def sacasilla(posraton):
 			y = i
 	return x,y
 
+def sumdig(L):
+    '''Obtiene la suma digital de los elementos de L'''
+    return reduce(lambda x, y: x ^ y, L)
 
 tablero = pygame.image.load('tablero-ajedrez.png')
 puntoazul = pygame.image.load('puntoazul.png')
@@ -256,8 +260,7 @@ while True:
 					fichamover.cambiasilla(nuevacasillax,nuevacasillay)
 				turno = 2
 				dobleFicha = False
-
-
+				piezaAtras = False
 
 	#refrescos y representaciones
 		visor.blit(torreblanca.foto,torreblanca.pos)
@@ -275,7 +278,8 @@ while True:
 			click=[]
 			fichamover=""
 			pieza = ''
-			pygame.display.flip()
+			#dobleFicha=False
+			#piezaAtras=False
 
 		if len(click) == 2 and dobleFicha:
 			for pos in posimov:
@@ -295,16 +299,16 @@ while True:
 		posY= []
 		for i in range(len(ocupadas)):
 			for j in range(len(ocupadas[i])):
-				if ocupadas[i][j] != 0 :
+				if ocupadas[i][j] != 0:
 					lista.append(ocupadas[i][j].nombre)
 					posX.append(j)
 					posY.append(i)
-				if ocupadas2[i][j] != 0 :
+				if ocupadas2[i][j] != 0:
 					lista.append(ocupadas2[i][j].nombre)
 					posX.append(j)
 					posY.append(i)
 
-		TorreAtras=False
+		TorreAtras = False
 		ReyAtras = False
 		if lista[0] == "rey":
 			valorRey = Rey[posX[0]][posY[0]]
@@ -320,8 +324,8 @@ while True:
 				posimovTorre = fichamoverTorre.puedemovera()
 
 		else:
-			valorRey = Rey[posX[1]][posY[1]]
 			valorTorre = Torre[posX[0]][posY[0]]
+			valorRey = Rey[posX[1]][posY[1]]
 			fichamoverTorre = sacapieza(posX[0], posY[0])
 			posimovTorre = fichamoverTorre.puedemovera()
 			if posX[0] == posX[1] and posY[0] == posY[1]:
@@ -339,12 +343,12 @@ while True:
 			time.sleep(1)
 			break
 
-
 		sincambiar = True
 		for (nuevacasillax,nuevacasillay) in posimovTorre:
 			if sincambiar:
 				nuevovalorTorre = Torre[nuevacasillay][nuevacasillax]
 				sumav = sumdig([valorRey, nuevovalorTorre])
+				print(sumav)
 				if sumav == 0:
 					if TorreAtras:
 						fichamoverTorre.cambiasilla2(nuevacasillax, nuevacasillay)
@@ -364,23 +368,33 @@ while True:
 							sincambiar = False
 		if sincambiar:
 			if 0 < fichamoverTorre.casy + 1 <= 8 and 0 < fichamoverTorre.casx <= 8:
-				fichamoverTorre.cambiasilla(fichamoverTorre.casy + 1, fichamoverTorre.casx)
+				if TorreAtras:
+					fichamoverTorre.cambiasilla2(fichamoverTorre.casx, fichamoverTorre.casy + 1)
+				else:
+					fichamoverTorre.cambiasilla(fichamoverTorre.casx, fichamoverTorre.casy + 1)
 				sincambiar = False
 			elif 0 < fichamoverTorre.casy <= 8 and 0 < fichamoverTorre.casx + 1 <= 8:
-				fichamoverTorre.cambiasilla(fichamoverTorre.casy, fichamoverTorre.casx + 1)
+				if TorreAtras:
+					fichamoverTorre.cambiasilla2(fichamoverTorre.casx + 1, fichamoverTorre.casy)
+				else:
+					fichamoverTorre.cambiasilla(fichamoverTorre.casx + 1, fichamoverTorre.casy)
 				sincambiar = False
 
 		if sincambiar:
 			if 0 < fichamoverRey.casy + 1 <= 8 and 0 < fichamoverRey.casx <= 8:
-				fichamoverRey.cambiasilla(fichamoverRey.casy + 1, fichamoverRey.casx)
+				if ReyAtras:
+					fichamoverRey.cambiasilla2(fichamoverRey.casx, fichamoverRey.casy + 1)
+				else:
+					fichamoverRey.cambiasilla(fichamoverRey.casx, fichamoverRey.casy + 1)
 				sincambiar = False
 			elif 0 < fichamoverRey.casy <= 8 and 0 < fichamoverRey.casx + 1 <= 8:
-				fichamoverRey.cambiasilla(fichamoverRey.casy, fichamoverRey.casx + 1)
+				if TorreAtras:
+					fichamoverRey.cambiasilla2(fichamoverRey.casx + 1, fichamoverRey.casy)
+				else:
+					fichamoverRey.cambiasilla(fichamoverRey.casx + 1, fichamoverRey.casy)
 				sincambiar = False
-
 
 		visor.blit(torreblanca.foto, torreblanca.pos)
 		visor.blit(reyblanco.foto, reyblanco.pos)
 		pygame.display.update()
-
 		turno = 1
