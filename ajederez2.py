@@ -101,7 +101,8 @@ a=3
 b=1
 c=1
 d=2
-#si queremos que las posiciones iniciales sean aleatorias (en la esquina superior izquierda) descomentariamos las siguientes 4 líneas
+#si queremos que las posiciones iniciales sean aleatorias (en la esquina superior izquierda)
+# descomentariamos las siguientes 4 líneas
 '''a= random.randint(1,3)
 b= random.randint(1,3)
 c= random.randint(1,3)
@@ -131,7 +132,7 @@ def	sacapieza2(casx,casy):
 	return ocupadas2[casy][casx]
 
 
-def sacasilla(posraton):
+def sacacasilla(posraton):
 	for i in range(9):
 		if casilla[i] < posraton[0] <= casilla[i+1]:
 			x = i
@@ -218,14 +219,14 @@ while True:
 			if posraton[0] > 560:
 				click=[]
 				continue
-			casillax,casillay=sacasilla(posraton)
+			casillax,casillay=sacacasilla(posraton)
 			fichamover=sacapieza(casillax,casillay)
 			fichamover2=sacapieza2(casillax, casillay)
 			if fichamover2 != 0:
 				dobleFicha = True
 			else:
 				if (fichamover == 0):
-					fichamover=""	#anula movimientos del otro turno
+					fichamover=""
 				else:
 					posimov = fichamover.puedemovera()
 				if fichamover=="":
@@ -233,7 +234,7 @@ while True:
 
 		if len(click) == 2 and not dobleFicha:
 			posraton = click[1]
-			nuevacasillax,nuevacasillay = sacasilla(posraton)
+			nuevacasillax,nuevacasillay = sacacasilla(posraton)
 			if (nuevacasillax,nuevacasillay) in posimov:
 				fichamover.cambiacasilla(nuevacasillax,nuevacasillay)
 				turno = 2
@@ -263,7 +264,7 @@ while True:
 
 		if len(click) == 3:
 			posraton = click[2]
-			nuevacasillax,nuevacasillay = sacasilla(posraton)
+			nuevacasillax,nuevacasillay = sacacasilla(posraton)
 			if (nuevacasillax,nuevacasillay) in posimov:
 				if piezaAtras:
 					fichamover2.cambiacasilla2(nuevacasillax, nuevacasillay)
