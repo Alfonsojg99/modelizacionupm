@@ -127,25 +127,6 @@ def sacasilla(posraton):
 			y = i
 	return x,y
 
-def ask(screen, question):
-  "ask(screen, question) -> answer"
-  pygame.font.init()
-  current_string = []
-  inputbox.display_box(screen, question + ": " + "".join(current_string))
-  while 1:
-    inkey = inputbox.get_key()
-    if inkey == K_BACKSPACE:
-      current_string = current_string[0:-1]
-    elif inkey == K_RETURN:
-      break
-    elif inkey == K_MINUS:
-      current_string.append("_")
-    elif inkey <= 127:
-      current_string.append(chr(inkey))
-    inputbox.display_box(screen, question + ": " + "".join(current_string))
-
-  return "".join(current_string)
-
 
 tablero = pygame.image.load('tablero-ajedrez.png')
 puntoazul = pygame.image.load('puntoazul.png')
@@ -162,8 +143,6 @@ torreblanca = Torreblanca()
 reyblanco = Reyblanco()
 
 click=[]
-click2=[]
-
 fichamover=""
 turno=1
 piezaAtras = False
@@ -177,7 +156,6 @@ while True:
 			sys.exit()
 		if evento.type == MOUSEBUTTONDOWN:
 			click.append(pygame.mouse.get_pos())
-			print(click)
 
 	visor.blit(tablero,(0,0))
 	if turno == 1:
@@ -220,7 +198,7 @@ while True:
 			pygame.display.update()
 			time.sleep(1)
 			break
-		if len(click) == 1:#primer click
+		if len(click) == 1:
 			posraton = click[0]
 			if posraton[0] > 560:
 				click=[]
@@ -232,13 +210,13 @@ while True:
 				dobleFicha = True
 			else:
 				if (fichamover == 0):
-					fichamover=""#anula movimientos del otro turno
+					fichamover=""	#anula movimientos del otro turno
 				else:
 					posimov = fichamover.puedemovera()
 				if fichamover=="":
 					click=[]
 
-		if len(click) == 2 and not dobleFicha:#segundo click
+		if len(click) == 2 and not dobleFicha:
 			posraton = click[1]
 			nuevacasillax,nuevacasillay = sacasilla(posraton)
 			if (nuevacasillax,nuevacasillay) in posimov:
@@ -246,8 +224,6 @@ while True:
 				turno = 2
 
 		if len(click) == 2 and dobleFicha:
-			#visor.blit(botonRey, (560, 0))
-			#visor.blit(botonTorre, (560, 100))
 			botonx = 0
 			botony = 0
 			posimov = []
@@ -276,10 +252,8 @@ while True:
 			if (nuevacasillax,nuevacasillay) in posimov:
 				if piezaAtras:
 					fichamover2.cambiasilla2(nuevacasillax, nuevacasillay)
-					print('y')
 				else:
 					fichamover.cambiasilla(nuevacasillax,nuevacasillay)
-					print('z')
 				turno = 2
 				dobleFicha = False
 
@@ -314,7 +288,6 @@ while True:
 		pygame.display.update()
 		time.sleep(0.5)
 
-	#pygame.time.wait(20)#limita a 50 fps para ahorrar cpu
 
 	if turno == 2:
 		lista = []
