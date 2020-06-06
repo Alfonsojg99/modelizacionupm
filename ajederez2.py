@@ -1,4 +1,5 @@
 from functools import reduce
+import random
 
 import pygame, sys, time
 from pygame.locals import *
@@ -48,7 +49,7 @@ Torre = [[0, 0, 0, 0, 0, 0, 0, 0, 0],
          [0, 6, 7, 4, 5, 2, 3, 0, 1],
          [0, 7, 6, 5, 4, 3, 2, 1, 0]]
 
-class metapieza():
+class figura():
 	def __init__(self,x,y):
 		self.casx=x
 		self.casy=y
@@ -60,7 +61,7 @@ class metapieza():
 			else:
 				ocupadas[self.casy][self.casx] = self
 
-	def cambiasilla(self,x,y):
+	def cambiacasilla(self,x,y):
 		if ocupadas2[self.casy][self.casx] == 0:
 			ocupadas[self.casy][self.casx] = 0
 		else:
@@ -68,7 +69,7 @@ class metapieza():
 			ocupadas2[self.casy][self.casx] = 0
 		self.__init__(x,y)
 
-	def cambiasilla2(self,x,y):
+	def cambiacasilla2(self,x,y):
 		ocupadas2[self.casy][self.casx] = 0
 		self.__init__(x,y)
 
@@ -89,28 +90,38 @@ class metapieza():
 		return self.casposibles
 
 
-class metarey(metapieza):
+class figuraRey(figura):
 	def movrey(self):
 		posimov=[]
-		posimov+=metapieza.movlineal(self,1)
-		posimov+=metapieza.movdiagonal(self)
+		posimov+=figura.movlineal(self,1)
+		posimov+=figura.movdiagonal(self)
 		return posimov
 
-class Torreblanca(metapieza):
-	def __init__(self,x=2,y=2):
+a=3
+b=1
+c=1
+d=2
+#si queremos que las posiciones iniciales sean aleatorias (en la esquina superior izquierda) descomentariamos las siguientes 4 líneas
+'''a= random.randint(1,3)
+b= random.randint(1,3)
+c= random.randint(1,3)
+d= random.randint(1,3)'''
+
+class Torreblanca(figura):
+	def __init__(self,x=a,y=b):
 		self.nombre = "torre"
 		self.foto = pygame.image.load('torreblanca.png')
-		metapieza.__init__(self,x,y)
+		figura.__init__(self,x,y)
 	def puedemovera(self):
-		return metapieza.movlineal(self)
+		return figura.movlineal(self)
 
-class Reyblanco(metarey):
-	def __init__(self,x=1,y=1):
+class Reyblanco(figuraRey):
+	def __init__(self,x=c,y=d):
 		self.nombre = "rey"
 		self.foto = pygame.image.load('reyblanco.png')
-		metapieza.__init__(self,x,y)
+		figura.__init__(self,x,y)
 	def puedemovera(self):
-		return metarey.movrey(self)
+		return figuraRey.movrey(self)
 
 
 def	sacapieza(casx,casy):
@@ -224,7 +235,7 @@ while True:
 			posraton = click[1]
 			nuevacasillax,nuevacasillay = sacasilla(posraton)
 			if (nuevacasillax,nuevacasillay) in posimov:
-				fichamover.cambiasilla(nuevacasillax,nuevacasillay)
+				fichamover.cambiacasilla(nuevacasillax,nuevacasillay)
 				turno = 2
 
 		if len(click) == 2 and dobleFicha:
@@ -255,9 +266,9 @@ while True:
 			nuevacasillax,nuevacasillay = sacasilla(posraton)
 			if (nuevacasillax,nuevacasillay) in posimov:
 				if piezaAtras:
-					fichamover2.cambiasilla2(nuevacasillax, nuevacasillay)
+					fichamover2.cambiacasilla2(nuevacasillax, nuevacasillay)
 				else:
-					fichamover.cambiasilla(nuevacasillax,nuevacasillay)
+					fichamover.cambiacasilla(nuevacasillax,nuevacasillay)
 				turno = 2
 				dobleFicha = False
 				piezaAtras = False
@@ -278,8 +289,6 @@ while True:
 			click=[]
 			fichamover=""
 			pieza = ''
-			#dobleFicha=False
-			#piezaAtras=False
 
 		if len(click) == 2 and dobleFicha:
 			for pos in posimov:
@@ -351,9 +360,9 @@ while True:
 				print(sumav)
 				if sumav == 0:
 					if TorreAtras:
-						fichamoverTorre.cambiasilla2(nuevacasillax, nuevacasillay)
+						fichamoverTorre.cambiacasilla2(nuevacasillax, nuevacasillay)
 					else:
-						fichamoverTorre.cambiasilla(nuevacasillax, nuevacasillay)
+						fichamoverTorre.cambiacasilla(nuevacasillax, nuevacasillay)
 					sincambiar = False
 		if sincambiar:
 			for (nuevacasillax, nuevacasillay) in posimovRey:
@@ -362,36 +371,36 @@ while True:
 						sumav = sumdig([nuevovalorRey, valorTorre])
 						if sumav == 0:
 							if ReyAtras:
-								fichamoverRey.cambiasilla2(nuevacasillax, nuevacasillay)
+								fichamoverRey.cambiacasilla2(nuevacasillax, nuevacasillay)
 							else:
-								fichamoverRey.cambiasilla(nuevacasillax, nuevacasillay)
+								fichamoverRey.cambiacasilla(nuevacasillax, nuevacasillay)
 							sincambiar = False
 		if sincambiar:
 			if 0 < fichamoverTorre.casy + 1 <= 8 and 0 < fichamoverTorre.casx <= 8:
 				if TorreAtras:
-					fichamoverTorre.cambiasilla2(fichamoverTorre.casx, fichamoverTorre.casy + 1)
+					fichamoverTorre.cambiacasilla2(fichamoverTorre.casx, fichamoverTorre.casy + 1)
 				else:
-					fichamoverTorre.cambiasilla(fichamoverTorre.casx, fichamoverTorre.casy + 1)
+					fichamoverTorre.cambiacasilla(fichamoverTorre.casx, fichamoverTorre.casy + 1)
 				sincambiar = False
 			elif 0 < fichamoverTorre.casy <= 8 and 0 < fichamoverTorre.casx + 1 <= 8:
 				if TorreAtras:
-					fichamoverTorre.cambiasilla2(fichamoverTorre.casx + 1, fichamoverTorre.casy)
+					fichamoverTorre.cambiacasilla2(fichamoverTorre.casx + 1, fichamoverTorre.casy)
 				else:
-					fichamoverTorre.cambiasilla(fichamoverTorre.casx + 1, fichamoverTorre.casy)
+					fichamoverTorre.cambiacasilla(fichamoverTorre.casx + 1, fichamoverTorre.casy)
 				sincambiar = False
 
 		if sincambiar:
 			if 0 < fichamoverRey.casy + 1 <= 8 and 0 < fichamoverRey.casx <= 8:
 				if ReyAtras:
-					fichamoverRey.cambiasilla2(fichamoverRey.casx, fichamoverRey.casy + 1)
+					fichamoverRey.cambiacasilla2(fichamoverRey.casx, fichamoverRey.casy + 1)
 				else:
-					fichamoverRey.cambiasilla(fichamoverRey.casx, fichamoverRey.casy + 1)
+					fichamoverRey.cambiacasilla(fichamoverRey.casx, fichamoverRey.casy + 1)
 				sincambiar = False
 			elif 0 < fichamoverRey.casy <= 8 and 0 < fichamoverRey.casx + 1 <= 8:
 				if TorreAtras:
-					fichamoverRey.cambiasilla2(fichamoverRey.casx + 1, fichamoverRey.casy)
+					fichamoverRey.cambiacasilla2(fichamoverRey.casx + 1, fichamoverRey.casy)
 				else:
-					fichamoverRey.cambiasilla(fichamoverRey.casx + 1, fichamoverRey.casy)
+					fichamoverRey.cambiacasilla(fichamoverRey.casx + 1, fichamoverRey.casy)
 				sincambiar = False
 
 		visor.blit(torreblanca.foto, torreblanca.pos)
