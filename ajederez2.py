@@ -1,10 +1,9 @@
-#-*- coding: utf-8 -*-
 import pygame, sys, time
 from pygame.locals import *
 from main import clasnim, sumdig, decabin
 
 pygame.init()
-visor = pygame.display.set_mode((560,560))
+visor = pygame.display.set_mode((660,560))
 pygame.display.set_caption("ajedrez")
 
 casilla=[0,0,70,140,210,280,350,420,490,560,999]
@@ -68,8 +67,8 @@ class metapieza():
 			ocupadas2[self.casy][self.casx] = 0
 		self.__init__(x,y)
 
-	def cambiosilla2(self,x,y):
-		ocupadas[self.casy][self.casx] = 0
+	def cambiasilla2(self,x,y):
+		ocupadas2[self.casy][self.casx] = 0
 		self.__init__(x,y)
 
 	def movlineal(self, movmax=8):
@@ -128,20 +127,49 @@ def sacasilla(posraton):
 			y = i
 	return x,y
 
+def ask(screen, question):
+  "ask(screen, question) -> answer"
+  pygame.font.init()
+  current_string = []
+  inputbox.display_box(screen, question + ": " + "".join(current_string))
+  while 1:
+    inkey = inputbox.get_key()
+    if inkey == K_BACKSPACE:
+      current_string = current_string[0:-1]
+    elif inkey == K_RETURN:
+      break
+    elif inkey == K_MINUS:
+      current_string.append("_")
+    elif inkey <= 127:
+      current_string.append(chr(inkey))
+    inputbox.display_box(screen, question + ": " + "".join(current_string))
+
+  return "".join(current_string)
+
 
 tablero = pygame.image.load('tablero-ajedrez.png')
 puntoazul = pygame.image.load('puntoazul.png')
 ganas = pygame.image.load('hasGanado.png')
 pierdes = pygame.image.load('hasPerdido.png')
 
+botonRey = pygame.image.load('botonrey.png')
+botonTorre = pygame.image.load('botontorre.png')
+botonRey2 = pygame.image.load('botonrey1.png')
+botonTorre2 = pygame.image.load('botontorre1.png')
+
 
 torreblanca = Torreblanca()
 reyblanco = Reyblanco()
 
 click=[]
+click2=[]
 
 fichamover=""
 turno=1
+piezaAtras = False
+posimov=[]
+pieza=''
+dobleFicha = False
 while True:
 	for evento in pygame.event.get():
 		if evento.type == QUIT:
@@ -149,9 +177,9 @@ while True:
 			sys.exit()
 		if evento.type == MOUSEBUTTONDOWN:
 			click.append(pygame.mouse.get_pos())
+			print(click)
 
 	visor.blit(tablero,(0,0))
-
 	if turno == 1:
 		lista = []
 		posX = []
@@ -169,13 +197,22 @@ while True:
 		if lista[0] == "rey":
 			fichamoverRey = sacapieza(posX[0], posY[0])
 			posimovRey = fichamoverRey.puedemovera()
-			fichamoverTorre = sacapieza(posX[1], posY[1])
-			posimovTorre = fichamoverTorre.puedemovera()
+			if posX[0] == posX[1] and posY[0] == posY[1]:
+				fichamoverTorre = sacapieza2(posX[1], posY[1])
+				posimovTorre = fichamoverTorre.puedemovera()
+			else:
+				fichamoverTorre = sacapieza(posX[1], posY[1])
+				posimovTorre = fichamoverTorre.puedemovera()
+
 		else:
-			fichamoverRey = sacapieza(posX[1], posY[1])
-			posimovRey = fichamoverRey.puedemovera()
 			fichamoverTorre = sacapieza(posX[0], posY[0])
 			posimovTorre = fichamoverTorre.puedemovera()
+			if posX[0] == posX[1] and posY[0] == posY[1]:
+				fichamoverRey = sacapieza2(posX[1], posY[1])
+				posimovRey = fichamoverRey.puedemovera()
+			else:
+				fichamoverRey = sacapieza(posX[1], posY[1])
+				posimovRey = fichamoverRey.puedemovera()
 
 		if len(posimovRey) == 0 and len(posimovTorre) == 0:
 			time.sleep(1)
@@ -183,36 +220,96 @@ while True:
 			pygame.display.update()
 			time.sleep(1)
 			break
-
 		if len(click) == 1:#primer click
 			posraton = click[0]
+			if posraton[0] > 560:
+				click=[]
+				continue
 			casillax,casillay=sacasilla(posraton)
 			fichamover=sacapieza(casillax,casillay)
-			if (fichamover == 0):
-				fichamover=""#anula movimientos del otro turno
+			fichamover2=sacapieza2(casillax, casillay)
+			if fichamover2 != 0:
+				dobleFicha = True
 			else:
-				posimov = fichamover.puedemovera()
-			if fichamover=="":
-				click=[]
+				if (fichamover == 0):
+					fichamover=""#anula movimientos del otro turno
+				else:
+					posimov = fichamover.puedemovera()
+				if fichamover=="":
+					click=[]
 
-		if len(click) == 2:#segundo click
+		if len(click) == 2 and not dobleFicha:#segundo click
 			posraton = click[1]
 			nuevacasillax,nuevacasillay = sacasilla(posraton)
 			if (nuevacasillax,nuevacasillay) in posimov:
 				fichamover.cambiasilla(nuevacasillax,nuevacasillay)
 				turno = 2
 
-	#refrescos y representaciones
+		if len(click) == 2 and dobleFicha:
+			#visor.blit(botonRey, (560, 0))
+			#visor.blit(botonTorre, (560, 100))
+			botonx = 0
+			botony = 0
+			posimov = []
+			botonx, botony = click[1]
+			if botonx > 560 and botony > 175 and botony < 275:
+				pieza = 'rey'
+			elif botonx > 560 and botony > 285 and botony < 385:
+				pieza = 'torre'
 
+			if pieza == 'rey':
+				if fichamover.nombre == 'rey':
+					posimov = fichamover.puedemovera()
+				else:
+					posimov = fichamover2.puedemovera()
+					piezaAtras=True
+			elif pieza == 'torre':
+				if fichamover.nombre == 'torre':
+					posimov = fichamover.puedemovera()
+				else:
+					posimov = fichamover2.puedemovera()
+					piezaAtras=True
+
+		if len(click) == 3:
+			posraton = click[2]
+			nuevacasillax,nuevacasillay = sacasilla(posraton)
+			if (nuevacasillax,nuevacasillay) in posimov:
+				if piezaAtras:
+					fichamover2.cambiasilla2(nuevacasillax, nuevacasillay)
+					print('y')
+				else:
+					fichamover.cambiasilla(nuevacasillax,nuevacasillay)
+					print('z')
+				turno = 2
+				dobleFicha = False
+
+
+
+	#refrescos y representaciones
 		visor.blit(torreblanca.foto,torreblanca.pos)
 		visor.blit(reyblanco.foto,reyblanco.pos)
-		if len(click) > 1:
+		visor.blit(botonRey, (560, 175))
+		visor.blit(botonTorre, (560, 285))
+		if len(click) > 1 and not dobleFicha:
 			click=[]
 			fichamover=""
-		if len(click) > 0:
+		if len(click) > 0 and not dobleFicha:
 			for pos in posimov:
 				visor.blit(puntoazul,(casilla[pos[0]],casilla[pos[1]]))
 
+		if len(click) == 3  and not dobleFicha:
+			click=[]
+			fichamover=""
+			pieza = ''
+			pygame.display.flip()
+
+		if len(click) == 2 and dobleFicha:
+			for pos in posimov:
+				visor.blit(puntoazul,(casilla[pos[0]],casilla[pos[1]]))
+
+		if len(click) == 1 and dobleFicha:
+			visor.blit(botonRey2, (560, 175))
+			visor.blit(botonTorre2, (560, 285))
 
 		pygame.display.update()
 		time.sleep(0.5)
@@ -234,20 +331,33 @@ while True:
 					posX.append(j)
 					posY.append(i)
 
+		TorreAtras=False
+		ReyAtras = False
 		if lista[0] == "rey":
 			valorRey = Rey[posX[0]][posY[0]]
 			valorTorre = Torre[posX[1]][posY[1]]
 			fichamoverRey = sacapieza(posX[0], posY[0])
 			posimovRey = fichamoverRey.puedemovera()
-			fichamoverTorre = sacapieza(posX[1], posY[1])
-			posimovTorre = fichamoverTorre.puedemovera()
+			if posX[0] == posX[1] and posY[0] == posY[1]:
+				fichamoverTorre = sacapieza2(posX[1], posY[1])
+				posimovTorre = fichamoverTorre.puedemovera()
+				TorreAtras=True
+			else:
+				fichamoverTorre = sacapieza(posX[1], posY[1])
+				posimovTorre = fichamoverTorre.puedemovera()
+
 		else:
 			valorRey = Rey[posX[1]][posY[1]]
 			valorTorre = Torre[posX[0]][posY[0]]
-			fichamoverRey = sacapieza(posX[1], posY[1])
-			posimovRey = fichamoverRey.puedemovera()
 			fichamoverTorre = sacapieza(posX[0], posY[0])
 			posimovTorre = fichamoverTorre.puedemovera()
+			if posX[0] == posX[1] and posY[0] == posY[1]:
+				fichamoverRey = sacapieza2(posX[1], posY[1])
+				posimovRey = fichamoverRey.puedemovera()
+				ReyAtras=True
+			else:
+				fichamoverRey = sacapieza(posX[1], posY[1])
+				posimovRey = fichamoverRey.puedemovera()
 
 		if len(posimovRey) == 0 and len(posimovTorre) == 0:
 			time.sleep(1)
@@ -255,13 +365,18 @@ while True:
 			pygame.display.update()
 			time.sleep(1)
 			break
+
+
 		sincambiar = True
 		for (nuevacasillax,nuevacasillay) in posimovTorre:
 			if sincambiar:
 				nuevovalorTorre = Torre[nuevacasillay][nuevacasillax]
 				sumav = sumdig([valorRey, nuevovalorTorre])
 				if sumav == 0:
-					fichamoverTorre.cambiasilla(nuevacasillax, nuevacasillay)
+					if TorreAtras:
+						fichamoverTorre.cambiasilla2(nuevacasillax, nuevacasillay)
+					else:
+						fichamoverTorre.cambiasilla(nuevacasillax, nuevacasillay)
 					sincambiar = False
 		if sincambiar:
 			for (nuevacasillax, nuevacasillay) in posimovRey:
@@ -269,8 +384,27 @@ while True:
 						nuevovalorRey = Rey[nuevacasillay][nuevacasillax]
 						sumav = sumdig([nuevovalorRey, valorTorre])
 						if sumav == 0:
-							fichamoverRey.cambiasilla(nuevacasillax, nuevacasillay)
+							if ReyAtras:
+								fichamoverRey.cambiasilla2(nuevacasillax, nuevacasillay)
+							else:
+								fichamoverRey.cambiasilla(nuevacasillax, nuevacasillay)
 							sincambiar = False
+		if sincambiar:
+			if 0 < fichamoverTorre.casy + 1 <= 8 and 0 < fichamoverTorre.casx <= 8:
+				fichamoverTorre.cambiasilla(fichamoverTorre.casy + 1, fichamoverTorre.casx)
+				sincambiar = False
+			elif 0 < fichamoverTorre.casy <= 8 and 0 < fichamoverTorre.casx + 1 <= 8:
+				fichamoverTorre.cambiasilla(fichamoverTorre.casy, fichamoverTorre.casx + 1)
+				sincambiar = False
+
+		if sincambiar:
+			if 0 < fichamoverRey.casy + 1 <= 8 and 0 < fichamoverRey.casx <= 8:
+				fichamoverRey.cambiasilla(fichamoverRey.casy + 1, fichamoverRey.casx)
+				sincambiar = False
+			elif 0 < fichamoverRey.casy <= 8 and 0 < fichamoverRey.casx + 1 <= 8:
+				fichamoverRey.cambiasilla(fichamoverRey.casy, fichamoverRey.casx + 1)
+				sincambiar = False
+
 
 		visor.blit(torreblanca.foto, torreblanca.pos)
 		visor.blit(reyblanco.foto, reyblanco.pos)
