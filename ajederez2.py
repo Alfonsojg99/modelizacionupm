@@ -209,6 +209,9 @@ while True:
 				posimovRey = fichamoverRey.puedemovera()
 
 		if len(posimovRey) == 0 and len(posimovTorre) == 0:
+			visor.blit(torreblanca.foto, torreblanca.pos)
+			visor.blit(reyblanco.foto, reyblanco.pos)
+			pygame.display.update()
 			time.sleep(1)
 			visor.blit(pierdes, (0, 0))
 			pygame.display.update()
